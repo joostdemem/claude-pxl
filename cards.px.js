@@ -1,7 +1,7 @@
 // Original empty autobattler cards. Render: node bin/pxl.js build cards.px.js
 // All variants share panel bounds. Coordinates are documented in assets/cards/README.md.
-pal({ k:'#17151c', d:'#48302b', b:'#704735', c:'#98613d', l:'#c28a50',
-      h:'#edc382', p:'#e0c69b', q:'#c8aa7d', i:'#3a302e', j:'#51433a',
+pal({ k:'#000000', d:'#513226', b:'#88552f', c:'#b17942', l:'#e0ad62',
+      h:'#f5d28b', p:'#c4a477', q:'#c8aa7d', i:'#3a302e', j:'#51433a',
       a:'#ae8259', A:'#e1b987' })
 
 // The inset bevel always leaves a flat, untextured writing surface.
@@ -10,12 +10,9 @@ function panel(x,y,w,h,fill) {
     hline(x+1,y+h-2,w-2,'d'), vline(x+w-2,y+1,h-2,'d'),
     rect(x+2,y+2,w-4,h-4,fill)]
 }
-// Slim stat cells: 7px tall with a 1px rim, retaining a readable 5px interior.
+// Boundaries follow the annotated reference: thin full-width stat row.
 function statPanel(x) {
-  return [rect(x,65,20,7,'p'),
-    hline(x,65,20,'l'),vline(x,65,7,'c'),
-    hline(x,71,20,'d'),vline(x+19,65,7,'d'),
-    px(x,65,'k'),px(x+19,65,'k'),px(x,71,'k'),px(x+19,71,'k')]
+  return [rect(x,64,20,8,'k'),rect(x+1,65,18,6,'p')]
 }
 function corner(x,y,flip) {
   return stamp('_corner',x,y,{flip})
@@ -65,7 +62,7 @@ sprite('_common',{w:80,h:112},
   ...panel(8,22,64,39,'i'),
   // A shallow inner edge makes the art aperture read as a distinct window.
   box(11,25,58,33,'j'),
-  ...statPanel(8),...statPanel(30),...statPanel(52),
+  hline(8,62,64,'l'),...statPanel(8),...statPanel(30),...statPanel(52),hline(8,73,64,'l'),
   ...panel(8,77,64,22,'p'),
   ...panel(8,101,64,9,'p'),
   // A small, structural bronze clasp. No labels or game content baked in.
