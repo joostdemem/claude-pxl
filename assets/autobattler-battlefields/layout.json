@@ -1,0 +1,38 @@
+{
+  "native_size": [
+    640,
+    360
+  ],
+  "final_size": [
+    1920,
+    1080
+  ],
+  "preview_size": [
+    2560,
+    1440
+  ],
+  "unit_x": [
+    143,
+    231,
+    319,
+    407,
+    495
+  ],
+  "enemy_y": 112,
+  "player_y": 223,
+  "enemy_field": [
+    573,
+    111
+  ],
+  "player_field": [
+    66,
+    222
+  ],
+  "divider_y": 169,
+  "bottom_ui_safe_rect": [
+    100,
+    297,
+    440,
+    63
+  ]
+}
