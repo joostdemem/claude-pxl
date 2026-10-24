@@ -30,8 +30,8 @@ for i,v in enumerate(variants):
         canvas.paste(im,(x,32),im)
 canvas.save(out/'previews'/'comparison.png')
 # Rarity decorations must never change content geometry or contaminate text fields.
-regions=[(10,10,60,8),(12,26,56,31),(17,66,10,6),(35,66,10,6),
-         (53,66,10,6),(10,79,60,18),(10,103,60,5)]
+regions=[(10,10,60,8),(12,26,56,31),(9,66,18,5),(31,66,18,5),
+         (53,66,18,5),(10,79,60,18),(10,103,60,5)]
 images=[Image.open(out/f'{v}.png').convert('RGBA') for v in variants]
 for x,y,w,h in regions:
     crops=[im.crop((x,y,x+w,y+h)) for im in images]

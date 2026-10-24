@@ -10,6 +10,13 @@ function panel(x,y,w,h,fill) {
     hline(x+1,y+h-2,w-2,'d'), vline(x+w-2,y+1,h-2,'d'),
     rect(x+2,y+2,w-4,h-4,fill)]
 }
+// Slim stat cells: 7px tall with a 1px rim, retaining a readable 5px interior.
+function statPanel(x) {
+  return [rect(x,65,20,7,'p'),
+    hline(x,65,20,'l'),vline(x,65,7,'c'),
+    hline(x,71,20,'d'),vline(x+19,65,7,'d'),
+    px(x,65,'k'),px(x+19,65,'k'),px(x,71,'k'),px(x+19,71,'k')]
+}
 function corner(x,y,flip) {
   return stamp('_corner',x,y,{flip})
 }
@@ -58,7 +65,7 @@ sprite('_common',{w:80,h:112},
   ...panel(8,22,64,39,'i'),
   // A shallow inner edge makes the art aperture read as a distinct window.
   box(11,25,58,33,'j'),
-  ...panel(15,64,14,10,'p'),...panel(33,64,14,10,'p'),...panel(51,64,14,10,'p'),
+  ...statPanel(8),...statPanel(30),...statPanel(52),
   ...panel(8,77,64,22,'p'),
   ...panel(8,101,64,9,'p'),
   // A small, structural bronze clasp. No labels or game content baked in.
