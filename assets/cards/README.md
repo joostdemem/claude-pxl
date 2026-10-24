@@ -23,9 +23,9 @@ Top-left origin; x, y, width, height. Positions are identical for every rarity.
 | --- | --- | --- | --- | --- |
 | Name | 10 | 10 | 60 | 8 |
 | Art (inside inner lip) | 12 | 26 | 56 | 31 |
-| ATK | 10 | 66 | 16 | 6 |
-| HP | 32 | 66 | 16 | 6 |
-| CD | 54 | 66 | 16 | 6 |
+| ATK | 17 | 66 | 10 | 6 |
+| HP | 35 | 66 | 10 | 6 |
+| CD | 53 | 66 | 10 | 6 |
 | Effect text | 10 | 79 | 60 | 18 |
 | Type / tribe / tags | 10 | 103 | 60 | 5 |
 
@@ -37,4 +37,8 @@ The first pass had a 4px-high type field and a smaller effect area. The final la
 
 ## Validation
 
-The exporter checks exact dimensions, binary alpha (0/255), transparent corners, unchanged render pixels, and identical flat content regions across the three variants. Each final PNG uses 11 opaque colors plus transparency. All previews use nearest-neighbor scaling; the comparison adds a checkerboard only for display.
+The exporter checks exact dimensions, binary alpha (0/255), transparent corners, unchanged render pixels, and identical flat content regions across the three variants. Common and Rare use 11 opaque colors plus transparency; Legendary uses 13 opaque colors plus transparency. All previews use nearest-neighbor scaling; the comparison adds a checkerboard only for display.
+
+## Outline and lighting revision
+
+Continuous 2px near-black contour, upper-left rim highlights, and reduced right/bottom reflections establish a single light direction. The stat row is centered at x=15..64 (50px wide), with three 14px outer boxes and 4px gutters. Each 10px interior fits two 3x5 digits; show ATK/HP/CD labels or icons separately in the game UI. No final values are baked in.
