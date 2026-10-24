@@ -6,10 +6,14 @@ from PIL import Image, ImageDraw
 out = Path(__file__).resolve().parent
 root = out.parent.parent
 variants = ['common', 'rare', 'legendary']
+palette = {tuple(bytes.fromhex(line.strip().lstrip('#'))) for line in
+           (out/'palettes'/'meadowvale.hex').read_text().splitlines() if line.strip()}
 for v in variants:
     with Image.open(root / 'out' / 'sprites' / f'card_{v}.png') as src:
         im = src.convert('RGBA')
         assert im.size == (80, 112)
+        assert all(rgba[:3] in palette for _,rgba in im.getcolors() if rgba[3]), 'Color outside Meadowvale'
+        assert im.getpixel((40,0)) == (33,31,33,255), 'Missing palette-black outline'
         assert im.getchannel('A').getextrema() == (0, 255)
         assert set(im.getchannel('A').tobytes()) == {0, 255}
         im.save(out / f'{v}.png')
@@ -30,12 +34,13 @@ for i,v in enumerate(variants):
         canvas.paste(im,(x,32),im)
 canvas.save(out/'previews'/'comparison.png')
 # Rarity decorations must never change content geometry or contaminate text fields.
-regions=[(10,10,60,8),(12,26,56,31),(9,65,18,6),(31,65,18,6),
-         (53,65,18,6),(10,79,60,18),(10,103,60,5)]
+regions=[(9,7,62,10),(9,21,62,37),
+         (9,62,7,6),(19,62,8,6),(30,62,7,6),(40,62,9,6),
+         (52,62,7,6),(62,62,9,6),(9,73,62,3),(9,77,62,21),(9,103,62,4)]
 images=[Image.open(out/f'{v}.png').convert('RGBA') for v in variants]
 for x,y,w,h in regions:
     crops=[im.crop((x,y,x+w,y+h)) for im in images]
     assert all(c.tobytes()==crops[0].tobytes() for c in crops)
     assert all(len(c.getcolors())==1 for c in crops)
 assert all(im.getpixel((0,0))[3]==0 for im in images)
-print('PASS: identical empty content regions across all three variants; transparent outer corners.')
+print('PASS: identical empty content regions across all three variants; transparent outer corners; Meadowvale colors only.')

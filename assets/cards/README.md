@@ -1,46 +1,37 @@
-# Empty fantasy autobattler cards
+# Meadowvale card templates
 
-Original 80x112 templates: Common (bronze), Rare (verdigris accents), Legendary (gilded carving).
-No names, stat labels, values, art, or descriptions are baked into the game PNGs.
-The stat order is ATK, HP, CD from left to right. Rarity labels in the comparison image are preview-only.
+Three empty 80x112 RGBA cards rebuilt from the user's replacement layout: Common, Rare and Legendary. All game pixels use the supplied `palettes/meadowvale.hex`; each variant uses 12 opaque colors plus transparency. The outline is Meadowvale's darkest shade, `#211f21`. Common has a bronze frame; Rare adds muted green inlay; Legendary adds gold inlay. Rarity decorations sit outside all content panels.
 
-## Rebuild
+## Editable sources and export
 
-From the repository root, with Node >=22.18 and Python/Pillow:
+`cards.px.js` is the complete editable artwork for all three rarities. `card-template.px.js` is the monochrome geometry guide, kept separately from game exports.
+
+From the repository root (Node >=22.18 and Python/Pillow):
 
 ```sh
 node bin/pxl.js build cards.px.js
 python assets/cards/export.py
 ```
 
-`cards.px.js` is the shared editable source for all variants. The export helper preserves every rendered pixel while producing RGBA PNGs and 6x nearest-neighbor previews.
+The helper produces native PNGs and 6x nearest-neighbor previews. The comparison labels and checkerboard are preview-only. It checks exact dimensions, palette membership, binary alpha, outline color, unchanged rendered pixels, and identical empty content areas across all variants.
 
-## Content coordinates
+## Layout
 
-Top-left origin; x, y, width, height. Positions are identical for every rarity.
+The one-pixel panel boundaries follow the replacement diagram. Outer bounds are x, y, width, height:
 
-| Content | x | y | width | height |
+| Panel | x | y | width | height |
 | --- | --- | --- | --- | --- |
-| Name | 10 | 10 | 60 | 8 |
-| Art (inside inner lip) | 12 | 26 | 56 | 31 |
-| ATK | 9 | 65 | 18 | 6 |
-| HP | 31 | 65 | 18 | 6 |
-| CD | 53 | 65 | 18 | 6 |
-| Effect text | 10 | 79 | 60 | 18 |
-| Type / tribe / tags | 10 | 103 | 60 | 5 |
+| Name | 8 | 6 | 64 | 12 |
+| Art | 8 | 20 | 64 | 39 |
+| ATK icon / label | 8 | 61 | 9 | 8 |
+| ATK value | 18 | 61 | 10 | 8 |
+| HP icon / label | 29 | 61 | 9 | 8 |
+| HP value | 39 | 61 | 11 | 8 |
+| CD icon / label | 51 | 61 | 9 | 8 |
+| CD value | 61 | 61 | 11 | 8 |
+| Effect area, including header | 8 | 72 | 64 | 27 |
+| Type / tags | 8 | 102 | 64 | 6 |
 
-Use a 3x5 pixel font at native scale; effect box fits three lines with 1px line spacing. Name and type fields fit about 15 glyphs with 1px character spacing. Longer content needs abbreviations or a larger UI design. Keep 1px inset padding where possible. Use Nearest filtering and no mipmaps in Godot for pixel-perfect rendering.
+Each usable interior is inset one pixel. The effect header occupies y=73..75, its separator is y=76, and the main effect area is y=77..97. The bottom field has a 4px-high interior, as drawn in the new template; use a 4px microfont there. The main effect field supports three 5px text rows with spacing. Stat values have a 6px-high interior. All names, icons, values, artwork and text are supplied by the game, not baked in.
 
-## Visual refinement
-
-The first pass had a 4px-high type field and a smaller effect area. The final layout increases these to 5px and 18px usable height, respectively, while keeping the artwork prominent. Carved scrolls, inset bronze edging, and a few wear marks reflect the supplied material references without copying their card shapes or layout. Decoration remains outside the empty content regions.
-
-## Validation
-
-The exporter checks exact dimensions, binary alpha (0/255), transparent corners, unchanged render pixels, and identical flat content regions across the three variants. Common and Rare use 11 opaque colors plus transparency; Legendary uses 13 opaque colors plus transparency. All previews use nearest-neighbor scaling; the comparison adds a checkerboard only for display.
-
-## Outline and lighting revision
-
-Continuous 2px black contour, upper-left rim highlights, and reduced right/bottom reflections establish a single light direction. The stat row spans its original x=8..71 (64px wide), with three 20px boxes and 2px gutters. Each box is only 8px high with a one-pixel rim, rather than the earlier 10px height with a two-pixel bevel. The empty 18x6 interiors retain room for native 3x5 pixel text; show ATK/HP/CD labels or icons separately in the game UI. No final values are baked in.
-
-The annotated reference guides the aligned panel boundaries and continuous horizontal rails around the stat row. The frame uses a distinct copper-gold ramp with a true #000000 outer contour; white annotation lines are not exported.
+Use Nearest texture filtering and integer scale in Godot. Transparent clipped corners are preserved. Panel edges remain thin; they consume no extra space for stacked bevels. The inspected final pass strengthens the recessed edges using the palette's darkest shade.
